@@ -1,0 +1,60 @@
+body {
+    color: black;
+    background-color: #E5E5E5;
+    margin: 64px;
+    padding: 0px;
+    font-family: 'Inter';
+}
+
+.page {
+    width: 1024px;
+    max-width: 80%;
+    margin: 0 auto;
+    padding: 32px;
+    background-color: white;
+}
+
+.page-title {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.comment-box {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: row;
+}
+
+.avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    background-color: gray;
+}
+
+.comment-input {
+    margin-left: 16px;
+    height: 30px;
+    font-size: 11px;
+    flex-grow: 1;
+    border: 1px solid #E5E5E5;
+    border-radius: 4px;
+    padding: 0px 8px;
+}
+
+.comment-button {
+    margin-left: 16px;
+    line-height: 16.5px;
+    width: 83px;
+    height: 30px;
+    background-color: #7E34F6;
+    border-radius: 4px;
+    border: none;
+    font-size: 11px;
+    color: white;
+}
+
+.divider {
+    margin: 32px 0px;
+    border-top: 1px solid #E5E5E5;
+}

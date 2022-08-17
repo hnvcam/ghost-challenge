@@ -15,6 +15,17 @@ module.exports = {
         filename: '[name].js',
         path: dist
     },
+    module: {
+        rules: [
+            {
+                test: /\.css$/,
+                use: [
+                    'style-loader',
+                    'css-loader'
+                ]
+            }
+        ]
+    },
     plugins: [
         new webpack.ProvidePlugin({
             $: 'jquery'
