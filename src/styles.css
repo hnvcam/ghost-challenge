@@ -55,6 +55,65 @@ body {
 }
 
 .divider {
-    margin: 32px 0px;
+    margin-top: 32px;
+    margin-bottom: 8px;
     border-top: 1px solid #E5E5E5;
+}
+
+.container {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: row;
+}
+
+.content {
+    margin-left: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.content-head {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+.user-name {
+    color: #21293C;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.time-ago {
+    font-size: 11px;
+    color: #4B587C;
+    font-weight: 400px;
+}
+
+.time-ago::before {
+    content: "\00B7";
+    margin: 0px 8px;
+}
+
+.content-text {
+    padding: 4px 0px;
+    font-size: 13px;
+    font-weight: 400;
+    color: #21293C;
+}
+
+.content-action {
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 600;
+    color: #4B587C;
+}
+
+.up-vote::before {
+    content: "\25B4";
+    margin-right: 8px;
+}
+
+.reply {
+    margin-left: 16px;
 }
