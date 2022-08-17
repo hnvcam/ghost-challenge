@@ -8,7 +8,8 @@ module.exports = {
     mode: 'development',
     entry: {
         main: [
-            './src/dom.js'
+            './src/dom.js',
+            './src/timer.js'
         ]
     },
     output: {
@@ -23,10 +24,6 @@ module.exports = {
                     'style-loader',
                     'css-loader'
                 ]
-            },
-            {
-                test: /\.json$/,
-                use: 'json-loader'
             }
         ]
     },

@@ -30,7 +30,7 @@ function renderComment(comment) {
                 <div class="content">
                     <div class="content-head">
                         <div class="user-name">${_.startCase(comment.name)}</div>
-                        <div class="time-ago">${moment(comment.time).fromNow()}</div>
+                        <div class="time-ago" value="${comment.time}">${moment(comment.time).fromNow()}</div>
                     </div>
                     <div class="content-text">${comment.comment}</div>
                     <div class="content-foot">
@@ -46,8 +46,6 @@ function generateName(userId) {
         acc += char.charCodeAt(0);
         return acc;
     }, 0);
-
-    console.log(hash);
 
     return names.first[hash % names.first.length] + ' ' + names.last[hash % names.last.length];
 }
