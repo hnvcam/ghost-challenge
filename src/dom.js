@@ -1,18 +1,18 @@
 import './inter-web/inter.css';
 import './styles.css';
 import _ from 'lodash';
-import {addComment} from './api';
+import {addComment, getComments} from './api';
 import moment from 'moment';
 import names from './names.json';
 
 function registerHandlers() {
     const commentInput = $('input.comment-input');
     const commentBtn = $('button.comment-button');
-    commentBtn.on('click', function() {
+    commentBtn.on('click', async function() {
         const comment = commentInput.val();
         if (!_.isEmpty(comment)) {
             const userId = Math.random().toString(36).slice(2); // will be firebase userId
-            const addedComment = addComment(userId, generateName(userId), comment);
+            const addedComment = await addComment(userId, generateName(userId), comment);
             commentInput.val('');
             insertComment(addedComment);
         }
@@ -50,7 +50,13 @@ function generateName(userId) {
     return names.first[hash % names.first.length] + ' ' + names.last[hash % names.last.length];
 }
 
+async function loadComments() {
+    const comments = await getComments();
+    _.forEach(comments, insertComment);
+}
+
 
 $(function() {
     registerHandlers();
+    loadComments();
 })

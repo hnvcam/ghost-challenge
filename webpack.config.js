@@ -9,7 +9,8 @@ module.exports = {
     entry: {
         main: [
             './src/dom.js',
-            './src/timer.js'
+            './src/timer.js',
+            './src/firebase.js'
         ]
     },
     output: {
