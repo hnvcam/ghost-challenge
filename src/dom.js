@@ -3,7 +3,8 @@ import './styles.css';
 import _ from 'lodash';
 import {addComment, getComments, increaseVote} from './api';
 import moment from 'moment';
-import names from './names.json';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './firebase';
 
 function registerHandlers() {
     const commentBtn = $('button.comment-button');
@@ -14,7 +15,7 @@ function registerHandlers() {
         if (e.key === 'Enter') {
             await commentBtnHandler();
         }
-    })
+    });
 }
 
 async function commentBtnHandler() {
@@ -22,8 +23,7 @@ async function commentBtnHandler() {
     const comment = commentInput.val();
     
     if (!_.isEmpty(comment)) {
-        const userId = Math.random().toString(36).slice(2); // will be firebase userId
-        const addedComment = await addComment(userId, generateName(userId), comment);
+        const addedComment = await addComment(window.user.id, window.user.name, comment);
         commentInput.val('');
         insertComment(addedComment);
     }
@@ -53,9 +53,13 @@ function renderVotes(votes) {
     return 'Upvote ' + (votes ? `(${votes})` : '');
 }
 
+function getAvatarUri(name) {
+    return `https://ui-avatars.com/api/?name=${_.replace(name, ' ', '+')}&size=30`;
+}
+
 function renderComment(comment) {
     return `<div class="container">
-                <img class="avatar" src="https://ui-avatars.com/api/?name=${_.replace(comment.name, ' ', '+')}&size=30"/>
+                <img class="avatar" src="${getAvatarUri(comment.name)}"/>
                 <div class="content">
                     <div class="content-head">
                         <div class="user-name">${_.startCase(comment.name)}</div>
@@ -70,22 +74,21 @@ function renderComment(comment) {
             </div>`;
 }
 
-function generateName(userId) {
-    const hash = _.reduce(_.split(userId, ''), function(acc, char) {
-        acc += char.charCodeAt(0);
-        return acc;
-    }, 0);
-
-    return names.first[hash % names.first.length] + ' ' + names.last[hash % names.last.length];
-}
-
 async function loadComments() {
     const comments = await getComments();
     _.forEach(comments, insertComment);
+}
+
+function updateUserAvatar() {
+    const avatar = $('div.comment-box > img.avatar');
+    onAuthStateChanged(auth, function() {
+        avatar.attr('src', getAvatarUri(window.user.name));
+    })
 }
 
 
 $(function() {
     registerHandlers();
     loadComments();
+    updateUserAvatar();
 })
