@@ -1,27 +1,49 @@
 import './inter-web/inter.css';
 import './styles.css';
 import _ from 'lodash';
-import {addComment, getComments} from './api';
+import {addComment, getComments, increaseVote} from './api';
 import moment from 'moment';
 import names from './names.json';
 
 function registerHandlers() {
-    const commentInput = $('input.comment-input');
     const commentBtn = $('button.comment-button');
-    commentBtn.on('click', async function() {
-        const comment = commentInput.val();
-        if (!_.isEmpty(comment)) {
-            const userId = Math.random().toString(36).slice(2); // will be firebase userId
-            const addedComment = await addComment(userId, generateName(userId), comment);
-            commentInput.val('');
-            insertComment(addedComment);
-        }
-    });
+    commentBtn.on('click', commentBtnHandler);
+}
+
+async function commentBtnHandler() {
+    const commentInput = $('input.comment-input');
+    const comment = commentInput.val();
+    
+    if (!_.isEmpty(comment)) {
+        const userId = Math.random().toString(36).slice(2); // will be firebase userId
+        const addedComment = await addComment(userId, generateName(userId), comment);
+        commentInput.val('');
+        insertComment(addedComment);
+    }
+}
+
+async function upvoteBtnHandler() {
+    const upvoteInstance = $(this);
+    const commentId = upvoteInstance.attr('commentId');
+    let votes = parseInt(upvoteInstance.attr('value')) || 0;
+    votes++;
+    // This is for the visual effects. Synchronization is required from server side.
+    upvoteInstance.attr('value', votes);
+    upvoteInstance.html(renderVotes(votes));
+    await increaseVote(commentId);
 }
 
 function insertComment(comment) {
     const recentComments = $('div.recent-comments');
     recentComments.prepend(renderComment(comment));
+    
+    // We should add the handler when it finishes manipulating the DOM
+    const upvoteBtn = $(`a.up-vote[commentId="${comment.id}"]`);
+    upvoteBtn.on('click', upvoteBtnHandler);
+}
+
+function renderVotes(votes) {
+    return 'Upvote ' + (votes ? `(${votes})` : '');
 }
 
 function renderComment(comment) {
@@ -34,7 +56,7 @@ function renderComment(comment) {
                     </div>
                     <div class="content-text">${comment.comment}</div>
                     <div class="content-foot">
-                        <a href="#" class="up-vote content-action">Upvote</a>
+                        <a href="#" class="up-vote content-action" commentId="${comment.id}" value="${comment.votes}">${renderVotes(comment.votes)}</a>
                         <a href="#" class="reply content-action">Reply</a>
                     </div>
                 </div>

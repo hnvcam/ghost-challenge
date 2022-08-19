@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs, orderBy, query } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, increment, orderBy, query, updateDoc } from 'firebase/firestore';
 import _ from 'lodash';
 import moment from 'moment';
 import {database} from './firebase';
@@ -23,5 +23,13 @@ export async function getComments() {
         return Object.assign({
             id: doc.id,
         }, doc.data())
+    });
+}
+
+export async function increaseVote(commentId) {
+    const commentRef = doc(database, COMMENTS_COLLECTION, commentId);
+    const updateSnapshot = await updateDoc(commentRef, {
+        // instead of setting value, we use db increment to make sure not override other values
+        votes: increment(1)
     });
 }
