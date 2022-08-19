@@ -8,6 +8,13 @@ import names from './names.json';
 function registerHandlers() {
     const commentBtn = $('button.comment-button');
     commentBtn.on('click', commentBtnHandler);
+
+    const commentInput = $('input.comment-input');
+    commentInput.on('keypress', async function(e) {
+        if (e.key === 'Enter') {
+            await commentBtnHandler();
+        }
+    })
 }
 
 async function commentBtnHandler() {
@@ -48,7 +55,7 @@ function renderVotes(votes) {
 
 function renderComment(comment) {
     return `<div class="container">
-                <div class="avatar"></div>
+                <img class="avatar" src="https://ui-avatars.com/api/?name=${_.replace(comment.name, ' ', '+')}&size=30"/>
                 <div class="content">
                     <div class="content-head">
                         <div class="user-name">${_.startCase(comment.name)}</div>

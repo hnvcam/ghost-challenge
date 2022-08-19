@@ -18,7 +18,7 @@ export async function addComment(userId, name, comment) {
 
 export async function getComments() {
     const commentsRef = collection(database, COMMENTS_COLLECTION); 
-    const querySnapshot = await getDocs(query(commentsRef, orderBy("time", "desc")));
+    const querySnapshot = await getDocs(query(commentsRef, orderBy("time", "asc")));
     return _.map(querySnapshot.docs, function(doc) {
         return Object.assign({
             id: doc.id,
