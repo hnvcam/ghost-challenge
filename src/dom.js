@@ -1,7 +1,14 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import App from './App'
+import store from './store'
 import './inter-web/inter.css'
 import './styles.css'
+import { Provider } from 'react-redux'
 
-ReactDOM.render(<App/>, document.getElementById('react-root'))
+const root = createRoot(document.getElementById('react-root'))
+root.render(
+    <Provider store={store}>
+        <App/>
+    </Provider>
+)
