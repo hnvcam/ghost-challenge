@@ -6,32 +6,36 @@ const dist = path.resolve(__dirname, 'dist');
 
 module.exports = {
     mode: 'development',
-    entry: {
-        main: [
-            './src/dom.js',
-            './src/timer.js',
-            './src/firebase.js'
-        ]
-    },
+    entry: './src/dom.js',
     output: {
-        filename: '[name].js',
+        filename: 'main.js',
         path: dist
     },
     module: {
         rules: [
             {
+                test: /\.(js|jsx)$/,
+                exclude: /node_modules/,
+                loader: "babel-loader",
+                options: { 
+                    presets: [
+                        "@babel/env", 
+                        "@babel/preset-react"
+                    ] 
+                }
+            },
+            {
                 test: /\.css$/,
                 use: [
                     'style-loader',
-                    'css-loader'
+                    'css-loader',
+                    'postcss-loader'
                 ]
             }
         ]
     },
+    resolve: { extensions: ["*", ".js", ".jsx"] },
     plugins: [
-        new webpack.ProvidePlugin({
-            $: 'jquery'
-        }),
         new CopyPlugin({
             patterns: [
                 {from: path.resolve(__dirname, 'src/index.html'), to: dist}
