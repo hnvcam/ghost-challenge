@@ -5,11 +5,10 @@ import { database } from './firebase'
 
 const COMMENTS_COLLECTION = 'comments'
 
-export async function addComment (userId, name, comment) {
+export async function addComment (comment) {
   const obj = {
-    userId,
-    name,
-    comment,
+    // we should get the id from server
+    ..._.pickBy(comment, (val, key) => val && key !== 'id'),
     time: moment().toISOString()
   }
   const docRef = await addDoc(collection(database, COMMENTS_COLLECTION), obj)
