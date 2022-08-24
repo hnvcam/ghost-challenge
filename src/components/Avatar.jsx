@@ -5,7 +5,7 @@ import _ from 'lodash'
 const Avatar = ({ name }) => {
   const url = `https://ui-avatars.com/api/?name=${_.replace(name, ' ', '+')}&size=30`
   return (
-        <img src={url} className="rounded-full"/>
+        <img src={url} className="rounded-full h-[30px] w-[30px]"/>
   )
 }
 
