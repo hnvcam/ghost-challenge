@@ -1,41 +1,45 @@
-const path = require('path');
-const webpack = require('webpack');
-const CopyPlugin = require('copy-webpack-plugin');
+const path = require('path')
+const webpack = require('webpack')
+const CopyPlugin = require('copy-webpack-plugin')
 
-const dist = path.resolve(__dirname, 'dist');
+const dist = path.resolve(__dirname, 'dist')
 
 module.exports = {
-    mode: 'development',
-    entry: {
-        main: [
-            './src/dom.js',
-            './src/timer.js',
-            './src/firebase.js'
+  mode: 'development',
+  entry: './src/dom.js',
+  output: {
+    filename: 'main.js',
+    path: dist
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        options: {
+          presets: [
+            '@babel/env',
+            '@babel/preset-react'
+          ]
+        }
+      },
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          'postcss-loader'
         ]
-    },
-    output: {
-        filename: '[name].js',
-        path: dist
-    },
-    module: {
-        rules: [
-            {
-                test: /\.css$/,
-                use: [
-                    'style-loader',
-                    'css-loader'
-                ]
-            }
-        ]
-    },
-    plugins: [
-        new webpack.ProvidePlugin({
-            $: 'jquery'
-        }),
-        new CopyPlugin({
-            patterns: [
-                {from: path.resolve(__dirname, 'src/index.html'), to: dist}
-            ]
-        })
+      }
     ]
-};
+  },
+  resolve: { extensions: ['*', '.js', '.jsx'] },
+  plugins: [
+    new CopyPlugin({
+      patterns: [
+        { from: path.resolve(__dirname, 'src/index.html'), to: dist }
+      ]
+    })
+  ]
+}
