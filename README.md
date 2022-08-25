@@ -2,6 +2,9 @@
 
 The requirement is from: https://ghost.notion.site/Coding-challenge-4b8ae672b90745dda06afeeea0f27267
 
+
+# Demo now is available at: https://hnvcam.github.io/ghost-challenge/
+
 # The idea
 ## For MVP with jQuery
 - The front-end uses:
@@ -14,4 +17,4 @@ The requirement is from: https://ghost.notion.site/Coding-challenge-4b8ae672b907
     + React for layouting the page
     + Redux for managing the state of the page
     + Saga for async contact with the server
-- Backend re-uses existing store and functions, and FCM to notify clients about updates. 
+- Backend re-uses existing firestore. 
