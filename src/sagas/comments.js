@@ -1,10 +1,11 @@
 import { put, takeEvery } from '@redux-saga/core/effects'
-import { addComment, getComments } from '../api'
-import { addNewComment, setComments, updateComment } from '../slices/comments'
+import { addComment, getComments, increaseVote } from '../api'
+import { addNewComment, setComments, updateComment, upvote } from '../slices/comments'
 
 export default function * comments () {
   yield loadComments()
   yield takeEvery(addNewComment, uploadNewComment)
+  yield takeEvery(upvote, doUpvote)
 }
 
 function * loadComments () {
@@ -18,4 +19,8 @@ function * uploadNewComment ({ payload }) {
     oldData: payload,
     newData: newComment
   }))
+}
+
+function * doUpvote ({ payload: { id } }) {
+  yield increaseVote(id)
 }

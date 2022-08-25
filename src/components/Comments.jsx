@@ -10,11 +10,10 @@ const Comments = () => {
   const comments = useSelector(selectComments)
   const children = useSelector(selectChildComments)
 
-  const renderItems = (items, padding) => (
-    <div style={{ marginTop: 24, marginLeft: padding * 48 }}>
-      {_.map(items, (item, idx) => {
-        const itemChildren = _.get(children, item.id)
-        return (
+  const renderItems = (items, padding) =>
+    _.map(items, (item, idx) => {
+      const itemChildren = _.get(children, item.id)
+      return (
           <div key={item.id} style={{ marginBottom: 24 }}>
             <Comment
               content={item}
@@ -22,14 +21,18 @@ const Comments = () => {
               onReply={() => setReplyingId(item.id)}
               onCancelReply={() => setReplyingId('')}
             />
-            {renderItems(itemChildren, padding + 1)}
+            <div style={{ marginTop: 24, marginLeft: padding * 48 }}>
+              {renderItems(itemChildren, padding + 1)}
+            </div>
           </div>
-        )
-      })}
+      )
+    })
+
+  return (
+    <div style={{ marginTop: 24 }}>
+      {renderItems(comments, 0)}
     </div>
   )
-
-  return renderItems(comments, 0)
 }
 
 export default Comments

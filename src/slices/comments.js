@@ -30,19 +30,22 @@ export const commentSlice = createSlice({
         addRoot(state, newComment)
       }
     },
-    updateComment: (state, { payload: { oldData, newData } }) => {
-      if (updateInArray(state.root, oldData.id, newData)) {
-        return
-      }
-      _.forIn(state.children, arr => !updateInArray(arr, oldData.id, newData))
-    }
+    updateComment: (state, { payload: { oldData, newData } }) => findAndUpdate(state, oldData.id, newData),
+    upvote: (state, { payload: { id, votes } }) => findAndUpdate(state, id, { votes })
   }
 })
+
+function findAndUpdate (state, id, newData) {
+  if (updateInArray(state.root, id, newData)) {
+    return
+  }
+  _.forIn(state.children, arr => !updateInArray(arr, id, newData))
+}
 
 function updateInArray (arr, id, data) {
   const index = _.findIndex(arr, item => item.id === id)
   if (index >= 0) {
-    arr[index] = data
+    Object.assign(arr[index], data)
     return true
   }
   return false
@@ -59,5 +62,5 @@ function addRoot (state, comment) {
 
 export const selectComments = state => state.comments.root
 export const selectChildComments = state => state.comments.children
-export const { setComments, addNewComment, updateComment } = commentSlice.actions
+export const { setComments, addNewComment, updateComment, upvote } = commentSlice.actions
 export default commentSlice.reducer

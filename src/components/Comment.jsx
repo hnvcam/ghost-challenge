@@ -5,19 +5,20 @@ import _ from 'lodash'
 import moment from 'moment'
 import CommentInput from './CommentInput'
 import { useDispatch } from 'react-redux'
-import { addNewComment } from '../slices/comments'
+import { addNewComment, upvote } from '../slices/comments'
 
 const Comment = ({ content, adding, onReply, onCancelReply }) => {
   const { id, name, comment, time, votes } = content
   const dispatch = useDispatch()
-  const handleSubmit = (value) => {
+  const handleSubmit = value => {
     dispatch(addNewComment({
       ...value,
       parentId: id
     }))
     onCancelReply()
   }
-
+  // calculating number for visual only
+  const handleUpvote = () => dispatch(upvote({ id, votes: (votes || 0) + 1 }))
   return (
     <div className="flex flex-row text-ghost-text">
         <Avatar name={name}/>
@@ -41,14 +42,18 @@ const Comment = ({ content, adding, onReply, onCancelReply }) => {
                 </div>
               : <div className="flex flex-row mt-2 items-baseline text-ghost-link">
                     <div className="mr-2">&#x25B4;</div>
-                    <a href="#" className="text-xs no-underline font-semibold">Upvote{votes ? ` (${votes})` : ''}</a>
-                    <a
-                        href="#"
+                    <button
+                        className="text-xs no-underline font-semibold"
+                        onClick={handleUpvote}
+                    >
+                        Upvote{votes ? ` (${votes})` : ''}
+                    </button>
+                    <button
                         className="text-xs no-underline font-semibold ml-8"
                         onClick={onReply}
                     >
                         Reply
-                    </a>
+                    </button>
                 </div>
             }
         </div>
