@@ -30,7 +30,7 @@ const Comments = () => {
 
   return (
     <div style={{ marginTop: 24 }}>
-      {renderItems(comments, 0)}
+      {renderItems(comments, 1)}
     </div>
   )
 }
